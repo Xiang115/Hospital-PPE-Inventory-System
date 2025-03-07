@@ -118,7 +118,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                org.example.hospital_ppe_inventory_system/org.example.hospital_ppe_inventory_system.HelloApplication
+                                org/example/hospital_ppe_inventory_system/Login.java
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
