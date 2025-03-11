@@ -1,8 +1,9 @@
 U001,John Doe,123456,admin
-U002,Will Smith,84320123,admin
+U002,Jane Smith,456789,staff
 U003,Ali Ahmad,ABC123,staff
 U004,Adolf Hitler,EDF456,staff
 U005,Kujo Jotaro,483209,staff
 U005,Dio Brando,484039,staff
 U007,Joseph Joestar,340981,admin
-U009,John Wick,723489,staff
+U008,Jonathan Joestar,583409,staff
+U009,John Wick,729473,staff

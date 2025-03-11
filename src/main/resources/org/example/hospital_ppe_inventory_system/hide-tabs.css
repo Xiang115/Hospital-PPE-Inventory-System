@@ -1,0 +1,28 @@
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    visibility: hidden;
+    -fx-max-height: 0;
+    -fx-min-height: 0;
+}
+
+/* CSS for the temporary TableView */
+.temp-table-view {
+    -fx-background-color: #f0f0f0; /* Light gray background */
+    -fx-border-color: #cccccc; /* Border color */
+    -fx-border-width: 1px; /* Border width */
+    -fx-padding: 5px; /* Padding inside the TableView */
+}
+
+.temp-table-view .column-header {
+    -fx-background-color: #e0e0e0; /* Header background color */
+    -fx-font-size: 12px; /* Header font size */
+    -fx-font-weight: bold; /* Header font weight */
+}
+
+.temp-table-view .table-row-cell {
+    -fx-background-color: #ffffff; /* Row background color */
+    -fx-font-size: 12px; /* Row font size */
+}
+
+.temp-table-view .table-row-cell:filled:selected {
+    -fx-background-color: #d0d0d0; /* Selected row background color */
+}

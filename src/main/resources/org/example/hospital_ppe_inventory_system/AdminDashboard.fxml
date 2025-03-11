@@ -1,242 +1,194 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.String?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<TabPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.AdminController">
-   <tabs>
-      <!-- User Management Tab -->
-      <Tab text="User Management">
-         <AnchorPane>
-            <children>
-               <!-- TableView to display user list -->
-               <TableView fx:id="userTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
-                  <columns>
-                     <TableColumn fx:id="colUserID" text="User ID" prefWidth="100"/>
-                     <TableColumn fx:id="colUserName" text="Name" prefWidth="200"/>
-                     <TableColumn fx:id="colUserType" text="User Type" prefWidth="100"/>
-                  </columns>
-               </TableView>
-               <!-- Form for adding/updating users -->
-               <GridPane layoutX="20.0" layoutY="240.0" hgap="10" vgap="10">
-                  <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.DatePicker?>
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.AdminController">
+   <!-- MenuBar at the top for navigation -->
+   <top>
+      <MenuBar fx:id="menuBar">
+         <menus>
+            <Menu text="Navigation">
+               <items>
+                  <MenuItem fx:id="menuUserManagement" text="User Management" onAction="#handleMenuUserManagement"/>
+                  <MenuItem fx:id="menuInventoryManagement" text="Inventory Management" onAction="#handleMenuInventoryManagement"/>
+                  <MenuItem fx:id="menuSupplierManagement" text="Supplier Management" onAction="#handleMenuSupplierManagement"/>
+                  <MenuItem fx:id="menuHospitalManagement" text="Hospital Management" onAction="#handleMenuHospitalManagement"/>
+                  <MenuItem fx:id="menuReportingTracking" text="Reporting &amp; Tracking" onAction="#handleMenuReportingTracking"/>
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </top>
+   <!-- TabPane in the center holding each view -->
+   <center>
+      <TabPane fx:id="mainTabPane" stylesheets="@hide-tabs.css">
+         <tabs>
+            <!-- Each tab represents a view -->
+            <Tab fx:id="tabUserManagement" text="User Management">
+               <AnchorPane>
                   <children>
-                     <Label text="User ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfUserID" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-                     <Label text="Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfUserName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-                     <Label text="Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                     <PasswordField fx:id="pfUserPassword" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-                     <Label text="User Type:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                     <ComboBox fx:id="cbUserType" GridPane.rowIndex="3" GridPane.columnIndex="1">
-                        <items>
-                           <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="admin"/>
-                              <String fx:value="staff"/>
-                           </FXCollections>
-                        </items>
-                     </ComboBox>
+                     <!-- TableView to display user list -->
+                     <TableView fx:id="userTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                        <columns>
+                           <TableColumn fx:id="colUserID" prefWidth="100" text="User ID" />
+                           <TableColumn fx:id="colUserName" prefWidth="200" text="Name" />
+                           <TableColumn fx:id="colUserType" prefWidth="100" text="User Type" />
+                        </columns>
+                     </TableView>
+                     <!-- Action Buttons -->
+                     <HBox layoutX="20.0" layoutY="243.0" spacing="10">
+                        <children>
+                           <Button fx:id="btnAddUser" onAction="#handleAddUser" text="Add User" />
+                           <Button fx:id="btnUpdateUser" onAction="#handleUpdateUser" text="Update User" />
+                           <Button fx:id="btnDeleteUser" onAction="#handleDeleteUser" text="Delete User" />
+                           <Button fx:id="btnSearchUser" onAction="#handleSearchUser" text="Search" />
+                        </children>
+                     </HBox>
                   </children>
-               </GridPane>
-               <!-- Action Buttons -->
-               <HBox spacing="10" layoutX="20.0" layoutY="360.0">
+               </AnchorPane>
+            </Tab>
+            <Tab fx:id="tabInventoryManagement" text="Inventory Management">
+               <AnchorPane>
                   <children>
-                     <Button fx:id="btnAddUser" text="Add User" onAction="#handleAddUser"/>
-                     <Button fx:id="btnUpdateUser" text="Update User" onAction="#handleUpdateUser"/>
-                     <Button fx:id="btnDeleteUser" text="Delete User" onAction="#handleDeleteUser"/>
-                     <Button fx:id="btnSearchUser" text="Search" onAction="#handleSearchUser"/>
-                  </children>
-               </HBox>
-            </children>
-         </AnchorPane>
-      </Tab>
+                     <!-- TableView for inventory items -->
+                     <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                        <columns>
+                           <TableColumn fx:id="colItemCode" prefWidth="100" text="Item Code" />
+                           <TableColumn fx:id="colInventorySupplierCode" prefWidth="150" text="Supplier Code" />
+                           <TableColumn fx:id="colQuantity" prefWidth="100" text="Quantity" />
+                        </columns>
+                     </TableView>
+                     <!-- Form for inventory creation/update -->
+                     <GridPane hgap="10" layoutX="20.0" layoutY="240.0" vgap="10">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <Label text="Item Code:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                           <TextField fx:id="tfItemCode" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-      <!-- Inventory Management Tab -->
-      <Tab text="Inventory Management">
-         <AnchorPane>
-            <children>
-               <!-- TableView for inventory items -->
-               <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
-                  <columns>
-                     <TableColumn fx:id="colItemCode" text="Item Code" prefWidth="100"/>
-                     <TableColumn fx:id="colInventorySupplierCode" text="Supplier Code" prefWidth="150"/>
-                     <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="100"/>
-                  </columns>
-               </TableView>
-               <!-- Form for inventory creation/update -->
-               <GridPane layoutX="20.0" layoutY="240.0" hgap="10" vgap="10">
-                  <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
+                           <Label text="Supplier Code:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                           <TextField fx:id="tfInventorySupplierCode" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                           <Label text="Quantity:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                           <TextField fx:id="tfQuantity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </children>
+                     </GridPane>
+                     <!-- Buttons for inventory actions -->
+                     <HBox layoutX="20.0" layoutY="360.0" spacing="10">
+                        <children>
+                           <Button fx:id="btnCreateInventory" onAction="#handleCreateInventory" text="Create Inventory" />
+                           <Button fx:id="btnUpdateInventory" onAction="#handleUpdateInventory" text="Update Inventory" />
+                        </children>
+                     </HBox>
+                  </children>
+               </AnchorPane>
+            </Tab>
+            <Tab fx:id="tabSupplierManagement" text="Supplier Management">
+               <AnchorPane>
                   <children>
-                     <Label text="Item Code:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfItemCode" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-                     <Label text="Supplier Code:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfInventorySupplierCode" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-                     <Label text="Quantity:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfQuantity" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                     <!-- TableView for suppliers -->
+                     <TableView fx:id="supplierTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                        <columns>
+                           <TableColumn fx:id="colSupplierCodeMgmt" prefWidth="100" text="Supplier Code" />
+                           <TableColumn fx:id="colSupplierName" prefWidth="200" text="Supplier Name" />
+                           <TableColumn fx:id="colContact" prefWidth="150" text="Contact" />
+                        </columns>
+                     </TableView>
+                     <!-- Action Buttons -->
+                     <HBox layoutX="20.0" layoutY="234.0" spacing="10">
+                        <children>
+                           <Button fx:id="btnAddSupplier" onAction="#handleAddSupplier" text="Add Supplier" />
+                           <Button fx:id="btnUpdateSupplier" onAction="#handleUpdateSupplier" text="Update Supplier" />
+                           <Button fx:id="btnDeleteSupplier" onAction="#handleDeleteSupplier" text="Delete Supplier" />
+                        </children>
+                     </HBox>
                   </children>
-               </GridPane>
-               <!-- Buttons for inventory actions -->
-               <HBox spacing="10" layoutX="20.0" layoutY="360.0">
+               </AnchorPane>
+            </Tab>
+            <Tab fx:id="tabHospitalManagement" text="Hospital Management">
+               <AnchorPane>
                   <children>
-                     <Button fx:id="btnCreateInventory" text="Create Inventory" onAction="#handleCreateInventory"/>
-                     <Button fx:id="btnUpdateInventory" text="Update Inventory" onAction="#handleUpdateInventory"/>
+                     <!-- TableView for hospitals -->
+                     <TableView fx:id="hospitalTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                        <columns>
+                           <TableColumn fx:id="colHospitalCode" prefWidth="100" text="Hospital Code" />
+                           <TableColumn fx:id="colHospitalName" prefWidth="200" text="Hospital Name" />
+                        </columns>
+                     </TableView>
+                     <!-- Buttons for hospital actions -->
+                     <HBox layoutX="20.0" layoutY="235.0" spacing="10">
+                        <children>
+                           <Button fx:id="btnAddHospital" onAction="#handleAddHospital" text="Add Hospital" />
+                           <Button fx:id="btnUpdateHospital" onAction="#handleUpdateHospital" text="Update Hospital" />
+                           <Button fx:id="btnDeleteHospital" onAction="#handleDeleteHospital" text="Delete Hospital" />
+                        </children>
+                     </HBox>
                   </children>
-               </HBox>
-            </children>
-         </AnchorPane>
-      </Tab>
-
-      <!-- Supplier Management Tab -->
-      <Tab text="Supplier Management">
-         <AnchorPane>
-            <children>
-               <!-- TableView for suppliers -->
-               <TableView fx:id="supplierTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
-                  <columns>
-                     <TableColumn fx:id="colSupplierCodeMgmt" text="Supplier Code" prefWidth="100"/>
-                     <TableColumn fx:id="colSupplierName" text="Supplier Name" prefWidth="200"/>
-                     <TableColumn fx:id="colContact" text="Contact" prefWidth="150"/>
-                  </columns>
-               </TableView>
-               <!-- Form for supplier CRUD -->
-               <GridPane layoutX="20.0" layoutY="240.0" hgap="10" vgap="10">
-                  <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
+               </AnchorPane>
+            </Tab>
+            <Tab fx:id="tabReportingTracking" text="Reporting &amp; Tracking">
+               <AnchorPane>
                   <children>
-                     <Label text="Supplier Code:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfSupplierCodeMgmt" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                     <!-- Search Panel -->
+                     <GridPane hgap="10" layoutX="20.0" layoutY="20.0" vgap="10">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <Label text="Item Code:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                           <TextField fx:id="tfSearchItemCode" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                     <Label text="Supplier Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfSupplierName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                           <Label text="Start Date:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                           <DatePicker fx:id="dpStartDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                     <Label text="Contact:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfSupplierContact" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                           <Label text="End Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                           <DatePicker fx:id="dpEndDate" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                           <Button fx:id="btnSearchReport" onAction="#handleSearchReport" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        </children>
+                     </GridPane>
+                     <!-- TableView for displaying report results -->
+                     <TableView fx:id="reportTable" layoutX="20.0" layoutY="150.0" prefHeight="200.0" prefWidth="560.0">
+                        <columns>
+                           <TableColumn fx:id="colReportItemCode" prefWidth="100" text="Item Code" />
+                           <TableColumn fx:id="colReportDetails" prefWidth="300" text="Details" />
+                           <TableColumn fx:id="colReportDate" prefWidth="150" text="Date" />
+                        </columns>
+                     </TableView>
                   </children>
-               </GridPane>
-               <!-- Action Buttons -->
-               <HBox spacing="10" layoutX="20.0" layoutY="360.0">
-                  <children>
-                     <Button fx:id="btnAddSupplier" text="Add Supplier" onAction="#handleAddSupplier"/>
-                     <Button fx:id="btnUpdateSupplier" text="Update Supplier" onAction="#handleUpdateSupplier"/>
-                     <Button fx:id="btnDeleteSupplier" text="Delete Supplier" onAction="#handleDeleteSupplier"/>
-                  </children>
-               </HBox>
-            </children>
-         </AnchorPane>
-      </Tab>
-
-      <!-- Hospital Management Tab -->
-      <Tab text="Hospital Management">
-         <AnchorPane>
-            <children>
-               <!-- TableView for hospitals -->
-               <TableView fx:id="hospitalTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
-                  <columns>
-                     <TableColumn fx:id="colHospitalCode" text="Hospital Code" prefWidth="100"/>
-                     <TableColumn fx:id="colHospitalName" text="Hospital Name" prefWidth="200"/>
-                  </columns>
-               </TableView>
-               <!-- Form for hospital CRUD -->
-               <GridPane layoutX="20.0" layoutY="240.0" hgap="10" vgap="10">
-                  <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
-                  <children>
-                     <Label text="Hospital Code:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfHospitalCode" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-                     <Label text="Hospital Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfHospitalName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                  </children>
-               </GridPane>
-               <!-- Buttons for hospital actions -->
-               <HBox spacing="10" layoutX="20.0" layoutY="360.0">
-                  <children>
-                     <Button fx:id="btnAddHospital" text="Add Hospital" onAction="#handleAddHospital"/>
-                     <Button fx:id="btnUpdateHospital" text="Update Hospital" onAction="#handleUpdateHospital"/>
-                     <Button fx:id="btnDeleteHospital" text="Delete Hospital" onAction="#handleDeleteHospital"/>
-                  </children>
-               </HBox>
-            </children>
-         </AnchorPane>
-      </Tab>
-
-      <!-- Reporting & Tracking Tab -->
-      <Tab text="Reporting &amp; Tracking">
-         <AnchorPane>
-            <children>
-               <!-- Search Panel -->
-               <GridPane layoutX="20.0" layoutY="20.0" hgap="10" vgap="10">
-                  <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
-                  <children>
-                     <Label text="Item Code:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                     <TextField fx:id="tfSearchItemCode" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-                     <Label text="Start Date:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                     <DatePicker fx:id="dpStartDate" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-                     <Label text="End Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                     <DatePicker fx:id="dpEndDate" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-                     <Button fx:id="btnSearchReport" text="Search" GridPane.rowIndex="1" GridPane.columnIndex="2" onAction="#handleSearchReport"/>
-                  </children>
-               </GridPane>
-               <!-- TableView for displaying report results -->
-               <TableView fx:id="reportTable" layoutX="20.0" layoutY="150.0" prefHeight="200.0" prefWidth="560.0">
-                  <columns>
-                     <TableColumn fx:id="colReportItemCode" text="Item Code" prefWidth="100"/>
-                     <TableColumn fx:id="colReportDetails" text="Details" prefWidth="300"/>
-                     <TableColumn fx:id="colReportDate" text="Date" prefWidth="150"/>
-                  </columns>
-               </TableView>
-            </children>
-         </AnchorPane>
-      </Tab>
-   </tabs>
-</TabPane>
+               </AnchorPane>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </center>
+</BorderPane>

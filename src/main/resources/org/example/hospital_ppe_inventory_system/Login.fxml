@@ -4,31 +4,31 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.LoginController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.LoginController">
    <children>
-      <PasswordField fx:id="PFPassword" layoutX="199.0" layoutY="235.0" prefHeight="26.0" prefWidth="203.0">
+      <PasswordField fx:id="PFPassword" layoutX="300.0" layoutY="286.0" prefHeight="26.0" prefWidth="203.0">
          <font>
             <Font name="Arial" size="14.0" />
          </font></PasswordField>
-      <TextField fx:id="TFUserID" layoutX="198.0" layoutY="143.0" prefHeight="26.0" prefWidth="203.0" AnchorPane.topAnchor="143.0">
+      <TextField fx:id="TFUserID" layoutX="300.0" layoutY="167.0" prefHeight="26.0" prefWidth="203.0" AnchorPane.topAnchor="167.0">
          <font>
             <Font size="14.0" />
          </font></TextField>
-      <Label fx:id="TVUserID" layoutX="268.0" layoutY="112.0" text="User ID">
+      <Label fx:id="TVUserID" layoutX="370.0" layoutY="132.0" text="User ID">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font></Label>
-      <Label fx:id="TVPassword" layoutX="257.0" layoutY="200.0" text="Password">
+      <Label fx:id="TVPassword" layoutX="359.0" layoutY="240.0" text="Password">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="BtnEnter" layoutX="273.0" layoutY="296.0" mnemonicParsing="false" text="Enter">
+      <Button fx:id="BtnEnter" layoutX="375.0" layoutY="363.0" mnemonicParsing="false" text="Enter">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Label fx:id="TVSystemTitle" layoutX="107.0" layoutY="38.0" text="PPE Inventory Management System">
+      <Label fx:id="TVSystemTitle" layoutX="208.0" layoutY="55.0" text="PPE Inventory Management System">
          <font>
             <Font name="Arial" size="24.0" />
          </font>

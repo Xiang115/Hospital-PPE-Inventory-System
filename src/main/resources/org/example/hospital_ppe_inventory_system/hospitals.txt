@@ -1,0 +1,3 @@
+H001,City Hospital,123456789
+H002,General Hospital,428947289
+H003,Regional Medical Center,874534203
