@@ -1,3 +1,3 @@
-S001,Alpha Supplies,1234567890
-S002,Beta Distributors,0987654321
-S003,Gamma Traders,1122334455
+S001,MedTech Supplies Sdn Bhd,03-62415788,MedTech Supplies Sdn Bhd Unit 5-12 Menara KLH No. 2 Jalan Kasipillay 51200 Kuala Lumpur Wilayah Persekutuan
+S002,Meditech Equipment Sdn Bhd,03-78456677,Meditech Equipment Sdn Bhd, No. 2, Jalan PJU 1A/7A, Ara Damansara, 47301 Petaling Jaya, Selangor
+S003,Malaysian Healthcare Solutions,03-22825566,Malaysian Healthcare Solutions Suite 18-3 Level 18 Menara UOA Bangsar No. 5 Jalan Bangsar Utama 1 59000 Kuala Lumpur Wilayah Persekutuan

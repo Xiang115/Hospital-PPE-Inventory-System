@@ -110,19 +110,18 @@
                <AnchorPane>
                   <children>
                      <!-- TableView for suppliers -->
-                     <TableView fx:id="supplierTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                     <TableView fx:id="supplierTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
                         <columns>
-                           <TableColumn fx:id="colSupplierCodeMgmt" prefWidth="100" text="Supplier Code" />
+                           <TableColumn fx:id="colSupplierID" prefWidth="100" text="Supplier Code" />
                            <TableColumn fx:id="colSupplierName" prefWidth="200" text="Supplier Name" />
-                           <TableColumn fx:id="colContact" prefWidth="150" text="Contact" />
+                           <TableColumn fx:id="colSupplierContact" prefWidth="150" text="Contact" />
+                           <TableColumn fx:id="colSupplierAddress" prefWidth="800" text="Address"/>
                         </columns>
                      </TableView>
                      <!-- Action Buttons -->
                      <HBox layoutX="20.0" layoutY="234.0" spacing="10">
                         <children>
-                           <Button fx:id="btnAddSupplier" onAction="#handleAddSupplier" text="Add Supplier" />
                            <Button fx:id="btnUpdateSupplier" onAction="#handleUpdateSupplier" text="Update Supplier" />
-                           <Button fx:id="btnDeleteSupplier" onAction="#handleDeleteSupplier" text="Delete Supplier" />
                         </children>
                      </HBox>
                   </children>
@@ -132,18 +131,18 @@
                <AnchorPane>
                   <children>
                      <!-- TableView for hospitals -->
-                     <TableView fx:id="hospitalTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                     <TableView fx:id="hospitalTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
                         <columns>
-                           <TableColumn fx:id="colHospitalCode" prefWidth="100" text="Hospital Code" />
+                           <TableColumn fx:id="colHospitalID" prefWidth="100" text="Hospital Code" />
                            <TableColumn fx:id="colHospitalName" prefWidth="200" text="Hospital Name" />
+                           <TableColumn fx:id="colHospitalContact" prefWidth="150" text="Contact"/>
+                           <TableColumn fx:id="colHospitalAddress" prefWidth="800" text="Address"/>
                         </columns>
                      </TableView>
                      <!-- Buttons for hospital actions -->
                      <HBox layoutX="20.0" layoutY="235.0" spacing="10">
                         <children>
-                           <Button fx:id="btnAddHospital" onAction="#handleAddHospital" text="Add Hospital" />
                            <Button fx:id="btnUpdateHospital" onAction="#handleUpdateHospital" text="Update Hospital" />
-                           <Button fx:id="btnDeleteHospital" onAction="#handleDeleteHospital" text="Delete Hospital" />
                         </children>
                      </HBox>
                   </children>

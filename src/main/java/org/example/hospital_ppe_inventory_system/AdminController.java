@@ -41,6 +41,36 @@ public class AdminController implements Initializable {
     private TableView<User> userTable;
 
     @FXML
+    private TableView<Supplier> supplierTable;
+
+    @FXML
+    private TableColumn<Supplier, String> colSupplierID;
+
+    @FXML
+    private TableColumn<Supplier, String> colSupplierName;
+
+    @FXML
+    private TableColumn<Supplier, String> colSupplierContact;
+
+    @FXML
+    private TableColumn<Supplier, String> colSupplierAddress;
+
+    @FXML
+    private TableView<Hospital> hospitalTable;
+
+    @FXML
+    private TableColumn<Hospital, String> colHospitalID;
+
+    @FXML
+    private TableColumn<Hospital, String> colHospitalName;
+
+    @FXML
+    private TableColumn<Hospital, String> colHospitalContact;
+
+    @FXML
+    private TableColumn<Hospital, String> colHospitalAddress;
+
+    @FXML
     private TableColumn<User, String> colUserID;
 
     @FXML
@@ -51,6 +81,10 @@ public class AdminController implements Initializable {
 
     // ObservableList to hold the user data
     private final ObservableList<User> userList = FXCollections.observableArrayList();
+
+    private final ObservableList<Supplier> supplierList = FXCollections.observableArrayList();
+
+    private final ObservableList<Hospital> hospitalList = FXCollections.observableArrayList();
 
     private String LastUserID;
 
@@ -83,14 +117,9 @@ public class AdminController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set up TableView columns for User Management
-        colUserID.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        colUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colUserType.setCellValueFactory(new PropertyValueFactory<>("userType"));
-
-        loadUsersFromFile();
-
-        userTable.setItems(userList);
+        loadUserTable();
+        loadSupplierTable();
+        loadHospitalTable();
 
         mainTabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
             Stage stage = (Stage) mainTabPane.getScene().getWindow();
@@ -100,6 +129,96 @@ public class AdminController implements Initializable {
                 stage.setTitle("Hospital PPE Inventory System");
             }
         });
+    }
+
+    private void loadUserTable() {
+        colUserID.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        colUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colUserType.setCellValueFactory(new PropertyValueFactory<>("userType"));
+
+        loadUsersFromFile();
+
+        userTable.setItems(userList);
+    }
+
+    private void loadSupplierTable() {
+        colSupplierID.setCellValueFactory(new PropertyValueFactory<>("supplierID"));
+        colSupplierName.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+        colSupplierContact.setCellValueFactory(new PropertyValueFactory<>("supplierContact"));
+        colSupplierAddress.setCellValueFactory(new PropertyValueFactory<>("supplierAddress"));
+
+        loadSuppliersFromFile();
+
+        supplierTable.setItems(supplierList);
+    }
+
+    private void loadSuppliersFromFile() {
+        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\suppliers.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+
+                String[] tokens = line.split(",");
+                if (tokens.length >= 4) {
+                    String id = tokens[0].trim();
+                    String name = tokens[1].trim();
+                    String contact = tokens[2].trim();
+
+                    StringBuilder address = new StringBuilder();
+                    for (int i = 3; i < tokens.length; i++) {
+                        address.append(tokens[i]);
+                    }
+
+                    // Create a new User object and add it to the list
+                    supplierList.add(new Supplier(id, name, contact, address.toString()));
+
+                    LastUserID = id;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadHospitalTable() {
+        colHospitalID.setCellValueFactory(new PropertyValueFactory<>("hospitalID"));
+        colHospitalName.setCellValueFactory(new PropertyValueFactory<>("hospitalName"));
+        colHospitalContact.setCellValueFactory(new PropertyValueFactory<>("hospitalContact"));
+        colHospitalAddress.setCellValueFactory(new PropertyValueFactory<>("hospitalAddress"));
+
+        loadHospitalsFromFile();
+
+        hospitalTable.setItems(hospitalList);
+    }
+
+    private void loadHospitalsFromFile() {
+        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\hospitals.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+
+                String[] tokens = line.split(",");
+                if (tokens.length >= 4) {
+                    String id = tokens[0].trim();
+                    String name = tokens[1].trim();
+                    String contact = tokens[2].trim();
+
+                    StringBuilder address = new StringBuilder();
+                    for (int i = 3; i < tokens.length; i++) {
+                        address.append(tokens[i]);
+                    }
+
+                    // Create a new User object and add it to the list
+                    hospitalList.add(new Hospital(id, name, contact, address.toString()));
+
+                    LastUserID = id;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadUsersFromFile() {
@@ -142,6 +261,32 @@ public class AdminController implements Initializable {
         }
     }
 
+    private void saveSuppliersToFile() {
+        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\suppliers.txt";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (Supplier u : supplierList) {
+                bw.write(u.getSupplierID() + "," + u.getSupplierName() + "," + u.getSupplierContact() + "," + u.getSupplierAddress());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("File Error", "Unable to save to users.txt");
+        }
+    }
+
+    private void saveHospitalToFile() {
+        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\hospitals.txt";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (Hospital u : hospitalList) {
+                bw.write(u.getHospitalID() + "," + u.getHospitalName() + "," + u.getHospitalContact() + "," + u.getHospitalAddress());
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("File Error", "Unable to save to users.txt");
+        }
+    }
+
     public void handleAddUser(ActionEvent actionEvent) {
         Tab addUserTab = new Tab("Add User");
         VBox vbox = new VBox(10);
@@ -156,6 +301,13 @@ public class AdminController implements Initializable {
         cbUserType.getItems().addAll("admin", "staff");
 
         Button btnSave = new Button("Save");
+        Button btnBack = new Button("Back");
+
+        btnBack.setOnAction(e -> {
+            mainTabPane.getTabs().remove(addUserTab);
+            mainTabPane.getSelectionModel().select(tabUserManagement);
+        });
+
         btnSave.setOnAction(e -> {
             String id = GenerateUserID(LastUserID);
             String name = tfName.getText().trim();
@@ -181,7 +333,8 @@ public class AdminController implements Initializable {
             mainTabPane.getSelectionModel().select(tabUserManagement);
         });
 
-        vbox.getChildren().addAll(lblName, tfName, lblPassword, pfPassword, lblUserType, cbUserType, btnSave);
+        HBox buttonBox = new HBox(10, btnSave, btnBack);
+        vbox.getChildren().addAll(lblName, tfName, lblPassword, pfPassword, lblUserType, cbUserType, buttonBox);
         addUserTab.setContent(vbox);
 
         mainTabPane.getTabs().add(addUserTab);
@@ -213,6 +366,12 @@ public class AdminController implements Initializable {
         ComboBox<String> cbNewUserType = new ComboBox<>();
         cbNewUserType.getItems().addAll("admin", "staff");
         Button btnUpdate = new Button("Update");
+        Button btnBack = new Button("Back");
+
+        btnBack.setOnAction(e -> {
+            mainTabPane.getTabs().remove(updateUserTab);
+            mainTabPane.getSelectionModel().select(tabUserManagement);
+        });
 
         btnUpdate.setOnAction(e -> {
             String id = tfUserId.getText().trim();
@@ -252,7 +411,8 @@ public class AdminController implements Initializable {
             mainTabPane.getSelectionModel().select(tabUserManagement);
         });
 
-        vbox.getChildren().addAll(lblUserId, tfUserId, lblNewName, tfNewName, lblNewPassword, pfNewPassword, lblNewUserType, cbNewUserType, btnUpdate);
+        HBox buttonBox = new HBox(10, btnUpdate, btnBack);
+        vbox.getChildren().addAll(lblUserId, tfUserId, lblNewName, tfNewName, lblNewPassword, pfNewPassword, lblNewUserType, cbNewUserType, buttonBox);
         updateUserTab.setContent(vbox);
 
         mainTabPane.getTabs().add(updateUserTab);
@@ -267,7 +427,7 @@ public class AdminController implements Initializable {
         Label lblUserId = new Label("Enter User ID to delete:");
         TextField tfUserId = new TextField();
         Button btnDelete = new Button("Delete");
-        Button btnBack = new Button("Back"); // Add Back button
+        Button btnBack = new Button("Back");
 
         btnBack.setOnAction(e -> {
             mainTabPane.getTabs().remove(deleteUserTab);
@@ -285,7 +445,7 @@ public class AdminController implements Initializable {
             boolean removed = userList.removeIf(user -> user.getUserId().equals(userId));
 
             if (removed) {
-                saveUsersToFile();  // Update the file
+                saveUsersToFile();
                 showAlert("Success", "User deleted successfully.");
                 mainTabPane.getTabs().remove(deleteUserTab);
                 mainTabPane.getSelectionModel().select(tabUserManagement);
@@ -310,7 +470,7 @@ public class AdminController implements Initializable {
         Label lblUserId = new Label("Enter User ID to search:");
         TextField tfUserId = new TextField();
         Button btnSearch = new Button("Search");
-        Button btnBack = new Button("Back"); // Add Back button
+        Button btnBack = new Button("Back");
 
         TableView<User> tempTableView = new TableView<>();
         tempTableView.getStyleClass().add("temp-table-view");
@@ -365,7 +525,7 @@ public class AdminController implements Initializable {
         });
 
         HBox buttonBox = new HBox(10, btnSearch, btnBack);
-        vbox.getChildren().addAll(lblUserId, tfUserId, buttonBox,tempTableView);
+        vbox.getChildren().addAll(lblUserId, tfUserId, buttonBox, tempTableView);
         searchUserTab.setContent(vbox);
 
         mainTabPane.getTabs().add(searchUserTab);
@@ -378,22 +538,138 @@ public class AdminController implements Initializable {
     public void handleUpdateInventory(ActionEvent actionEvent) {
     }
 
-    public void handleAddSupplier(ActionEvent actionEvent) {
-    }
-
     public void handleUpdateSupplier(ActionEvent actionEvent) {
-    }
+        Tab updateSupplierTab = new Tab("Update Supplier");
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
 
-    public void handleDeleteSupplier(ActionEvent actionEvent) {
-    }
+        Label lblSupplierId = new Label("Enter Supplier ID to update:");
+        TextField tfSupplierId = new TextField();
+        Label lblNewName = new Label("New Supplier Name:");
+        TextField tfNewName = new TextField();
+        Label lblNewContact = new Label("New Supplier Contact:");
+        TextField tfNewContact = new TextField();
+        Label lblNewAddress = new Label("New Supplier Address:");
+        TextField tfNewAddress = new TextField();
+        Button btnUpdate = new Button("Update");
+        Button btnBack = new Button("Back");
 
-    public void handleAddHospital(ActionEvent actionEvent) {
+        btnBack.setOnAction(e -> {
+            mainTabPane.getTabs().remove(updateSupplierTab);
+            mainTabPane.getSelectionModel().select(tabSupplierManagement);
+        });
+
+        btnUpdate.setOnAction(e -> {
+            String id = tfSupplierId.getText().trim();
+            String newName = tfNewName.getText().trim();
+            String newContact = tfNewContact.getText().trim();
+            String newAddress = tfNewAddress.getText().trim();
+
+            if (id.isEmpty()) {
+                showAlert("Input Error", "Please enter a User ID.");
+                return;
+            }
+
+            Supplier supplierToUpdate = null;
+            for (Supplier u : supplierList) {
+                if (u.getSupplierID().equals(id)) {
+                    supplierToUpdate = u;
+                    break;
+                }
+            }
+            if (supplierToUpdate == null) {
+                showAlert("Not Found", "User not found.");
+                return;
+            }
+
+            if (!newName.isEmpty()) {
+                supplierToUpdate.setSupplierName(newName);
+            }
+            if (!newContact.isEmpty()) {
+                supplierToUpdate.setSupplierContact(newContact);
+            }
+            if (!newAddress.isEmpty()) {
+                supplierToUpdate.setSupplierAddress(newAddress);
+            }
+            saveSuppliersToFile();
+            supplierTable.refresh();
+            mainTabPane.getTabs().remove(updateSupplierTab);
+            mainTabPane.getSelectionModel().select(tabSupplierManagement);
+        });
+
+        HBox buttonBox = new HBox(10, btnUpdate, btnBack);
+        vbox.getChildren().addAll(lblSupplierId, tfSupplierId, lblNewName, tfNewName, lblNewContact, tfNewContact, lblNewAddress, tfNewAddress, buttonBox);
+        updateSupplierTab.setContent(vbox);
+
+        mainTabPane.getTabs().add(updateSupplierTab);
+        mainTabPane.getSelectionModel().select(updateSupplierTab);
     }
 
     public void handleUpdateHospital(ActionEvent actionEvent) {
-    }
+        Tab updateHospitalTab = new Tab("Update Hospital");
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
 
-    public void handleDeleteHospital(ActionEvent actionEvent) {
+        Label lblHospitalId = new Label("Enter Hospital ID to update:");
+        TextField tfHospitalId = new TextField();
+        Label lblNewName = new Label("New Hospital Name:");
+        TextField tfNewName = new TextField();
+        Label lblNewContact = new Label("New Hospital Contact:");
+        TextField tfNewContact = new TextField();
+        Label lblNewAddress = new Label("New Hospital Address:");
+        TextField tfNewAddress = new TextField();
+        Button btnUpdate = new Button("Update");
+        Button btnBack = new Button("Back");
+
+        btnBack.setOnAction(e -> {
+            mainTabPane.getTabs().remove(updateHospitalTab);
+            mainTabPane.getSelectionModel().select(tabHospitalManagement);
+        });
+
+        btnUpdate.setOnAction(e -> {
+            String id = tfHospitalId.getText().trim();
+            String newName = tfNewName.getText().trim();
+            String newContact = tfNewContact.getText().trim();
+            String newAddress = tfNewAddress.getText().trim();
+
+            if (id.isEmpty()) {
+                showAlert("Input Error", "Please enter a User ID.");
+                return;
+            }
+
+            Hospital hospitalToUpdate = null;
+            for (Hospital u : hospitalList) {
+                if (u.getHospitalID().equals(id)) {
+                    hospitalToUpdate = u;
+                    break;
+                }
+            }
+            if (hospitalToUpdate == null) {
+                showAlert("Not Found", "User not found.");
+                return;
+            }
+
+            if (!newName.isEmpty()) {
+                hospitalToUpdate.setHospitalName(newName);
+            }
+            if (!newContact.isEmpty()) {
+                hospitalToUpdate.setHospitalContact(newContact);
+            }
+            if (!newAddress.isEmpty()) {
+                hospitalToUpdate.setHospitalAddress(newAddress);
+            }
+            saveHospitalToFile();
+            hospitalTable.refresh();
+            mainTabPane.getTabs().remove(updateHospitalTab);
+            mainTabPane.getSelectionModel().select(tabHospitalManagement);
+        });
+
+        HBox buttonBox = new HBox(10, btnUpdate, btnBack);
+        vbox.getChildren().addAll(lblHospitalId, tfHospitalId, lblNewName, tfNewName, lblNewContact, tfNewContact, lblNewAddress, tfNewAddress, buttonBox);
+        updateHospitalTab.setContent(vbox);
+
+        mainTabPane.getTabs().add(updateHospitalTab);
+        mainTabPane.getSelectionModel().select(updateHospitalTab);
     }
 
     public void handleSearchReport(ActionEvent actionEvent) {

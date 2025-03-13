@@ -1,3 +1,3 @@
-H001,City Hospital,123456789
-H002,General Hospital,428947289
-H003,Regional Medical Center,874534203
+H001,Hospital Kuala Lumpur,03-26155555,Hospital Kuala Lumpur, Jalan Pahang, 50586 Kuala Lumpur, Wilayah Persekutuan
+H002,Pantai Hospital Kuala Lumpur,03-22968888,Pantai Hospital Kuala Lumpur, 8, Jalan Bukit Pantai, 59100 Kuala Lumpur, Wilayah Persekutuan
+H003,Gleneagles Hospital Kuala Lumpur,03-44051000,Gleneagles Hospital Kuala Lumpur, 282 & 286, Jalan Ampang, 50450 Kuala Lumpur, Wilayah Persekutuan
