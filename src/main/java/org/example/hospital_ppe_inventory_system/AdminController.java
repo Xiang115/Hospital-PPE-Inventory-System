@@ -758,7 +758,7 @@ public class AdminController implements Initializable {
         alert.showAndWait();
     }
 
-    private void updatePpeQuantity(String itemCode, String supplierCode, int quantityChange) {
+    private void updatePpeQuantity(String itemCode, String supplierCode, int quantityChange, String hospitalCode) {
         for (InventoryItem item : inventoryList) {
             if (item.getItemCode().equals(itemCode) && item.getSupplierCode().equals(supplierCode)) {
                 int newQuantity = item.getQuantity() + quantityChange;
@@ -766,7 +766,7 @@ public class AdminController implements Initializable {
                 if (newQuantity > item.getQuantity()) {
                     logTransaction("0", itemCode, supplierCode, quantityChange);
                 } else {
-                    logTransaction("1", itemCode, supplierCode, -1 * quantityChange);
+                    logTransaction("1", itemCode, hospitalCode, -1 * quantityChange);
                 }
 
                 item.setQuantity(newQuantity);
@@ -881,7 +881,7 @@ public class AdminController implements Initializable {
                     return;
                 }
 
-                updatePpeQuantity(itemCode, supplierCode, quantity);
+                updatePpeQuantity(itemCode, supplierCode, quantity, null);
 
                 inventoryTable.refresh();
                 mainTabPane.getTabs().remove(receiveTab);
@@ -965,7 +965,7 @@ public class AdminController implements Initializable {
                     return;
                 }
 
-                updatePpeQuantity(itemCode, item.getSupplierCode(), -quantity);
+                updatePpeQuantity(itemCode, item.getSupplierCode(), -quantity,hospitalCode);
 
                 inventoryTable.refresh();
                 mainTabPane.getTabs().remove(distributeTab);
