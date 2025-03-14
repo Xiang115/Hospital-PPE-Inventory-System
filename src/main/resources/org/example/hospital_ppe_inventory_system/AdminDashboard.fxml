@@ -4,7 +4,6 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.AdminController">
-   <!-- MenuBar at the top for navigation -->
    <top>
       <MenuBar fx:id="menuBar">
          <menus>
@@ -15,20 +14,18 @@
                   <MenuItem fx:id="menuSupplierManagement" onAction="#handleMenuSupplierManagement" text="Supplier Management" />
                   <MenuItem fx:id="menuHospitalManagement" onAction="#handleMenuHospitalManagement" text="Hospital Management" />
                   <MenuItem fx:id="menuReportingTracking" onAction="#handleMenuReportingTracking" text="Reporting &amp; Tracking" />
+                  <MenuItem fx:id="menuLogOut" onAction="#handleMenuLogOut" text="Log Out"/>
                </items>
             </Menu>
          </menus>
       </MenuBar>
    </top>
-   <!-- TabPane in the center holding each view -->
    <center>
       <TabPane fx:id="mainTabPane" stylesheets="@hide-tabs.css">
          <tabs>
-            <!-- Each tab represents a view -->
             <Tab fx:id="tabUserManagement" text="User Management">
                <AnchorPane>
                   <children>
-                     <!-- TableView to display user list -->
                      <TableView fx:id="userTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="700.0">
                         <columns>
                            <TableColumn fx:id="colUserID" prefWidth="100" text="User ID" />
@@ -37,7 +34,6 @@
                            <TableColumn fx:id="colUserType" prefWidth="100" text="User Type" />
                         </columns>
                      </TableView>
-                     <!-- Action Buttons -->
                      <HBox layoutX="20.0" layoutY="243.0" spacing="10">
                         <children>
                            <Button fx:id="btnAddUser" onAction="#handleAddUser" text="Add User" />
@@ -52,7 +48,6 @@
             <Tab fx:id="tabInventoryManagement" text="Inventory Management">
                <AnchorPane>
                   <children>
-                     <!-- TableView for inventory items -->
                      <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
                         <columns>
                            <TableColumn fx:id="colItemCode" prefWidth="100" text="Item Code" />
@@ -62,7 +57,6 @@
                            <TableColumn fx:id="colQuantity" prefWidth="100" text="Quantity" />
                         </columns>
                      </TableView>
-                     <!-- Buttons for inventory actions -->
                      <HBox layoutX="20.0" layoutY="360.0" spacing="10" />
                      <Button fx:id="btnCreateInventory" layoutX="22.0" layoutY="240.0" onAction="#handleCreateInventory" text="Create Inventory" />
                      <Button fx:id="btnReceiveInventory" layoutX="146.0" layoutY="240.0" onAction="#handleReceiveInventory" text="Receive Inventory" />
@@ -73,7 +67,6 @@
             <Tab fx:id="tabSupplierManagement" text="Supplier Management">
                <AnchorPane>
                   <children>
-                     <!-- TableView for suppliers -->
                      <TableView fx:id="supplierTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
                         <columns>
                            <TableColumn fx:id="colSupplierID" prefWidth="100" text="Supplier Code" />
@@ -82,7 +75,6 @@
                            <TableColumn fx:id="colSupplierAddress" prefWidth="800" text="Address" />
                         </columns>
                      </TableView>
-                     <!-- Action Buttons -->
                      <HBox layoutX="20.0" layoutY="234.0" spacing="10">
                         <children>
                            <Button fx:id="btnUpdateSupplier" onAction="#handleUpdateSupplier" text="Update Supplier" />
@@ -94,7 +86,6 @@
             <Tab fx:id="tabHospitalManagement" text="Hospital Management">
                <AnchorPane>
                   <children>
-                     <!-- TableView for hospitals -->
                      <TableView fx:id="hospitalTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
                         <columns>
                            <TableColumn fx:id="colHospitalID" prefWidth="100" text="Hospital Code" />
@@ -103,7 +94,6 @@
                            <TableColumn fx:id="colHospitalAddress" prefWidth="800" text="Address" />
                         </columns>
                      </TableView>
-                     <!-- Buttons for hospital actions -->
                      <HBox layoutX="20.0" layoutY="235.0" spacing="10">
                         <children>
                            <Button fx:id="btnUpdateHospital" onAction="#handleUpdateHospital" text="Update Hospital" />
@@ -115,7 +105,6 @@
             <Tab fx:id="tabReportingTracking" text="Reporting &amp; Tracking">
                <AnchorPane>
                   <children>
-                     <!-- Search Panel -->
                      <GridPane hgap="10" layoutX="20.0" layoutY="20.0" vgap="10">
                         <columnConstraints>
                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -141,7 +130,6 @@
                            <ComboBox fx:id="cbItemList" prefHeight="26.0" prefWidth="201.0" GridPane.columnIndex="1" />
                         </children>
                      </GridPane>
-                     <!-- TableView for displaying report results -->
                      <TableView fx:id="reportTable" layoutX="20.0" layoutY="150.0" prefHeight="200.0" prefWidth="700.0">
                         <columns>
                            <TableColumn fx:id="colReportDetailCode" prefWidth="100" text="Supplier Code" />

@@ -5,8 +5,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -19,6 +23,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -42,6 +47,9 @@ public class AdminController extends StaffController implements Initializable {
 
     @FXML
     private Tab tabReportingTracking;
+
+    @FXML
+    private MenuBar menuBar;
 
     @FXML
     private TableView<User> userTable;
@@ -1156,5 +1164,31 @@ public class AdminController extends StaffController implements Initializable {
             }
         }
         reportTable.setItems(transactionList.filtered(filterPredicate));
+    }
+
+    public void handleMenuLogOut(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Log Out");
+        alert.setHeaderText("Are you sure you want to log out?");
+        alert.setContentText("Click OK to confirm.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                Node sourceNode = menuBar;
+                Stage stage = (Stage) sourceNode.getScene().getWindow();
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+                Parent root = loader.load();
+
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Error", "Failed to load login screen.");
+            }
+        }
     }
 }
