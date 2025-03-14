@@ -1,5 +1,6 @@
 package org.example.hospital_ppe_inventory_system;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -16,12 +16,14 @@ import javafx.util.StringConverter;
 
 import java.io.*;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class AdminController implements Initializable {
+public class AdminController extends StaffController implements Initializable {
 
     @FXML
     private TabPane mainTabPane;
@@ -81,6 +83,9 @@ public class AdminController implements Initializable {
     private TableColumn<User, String> colUserName;
 
     @FXML
+    private TableColumn<User, String> colUserPassword;
+
+    @FXML
     private TableColumn<User, String> colUserType;
 
     @FXML
@@ -101,6 +106,33 @@ public class AdminController implements Initializable {
     @FXML
     private TableColumn<InventoryItem, Integer> colQuantity;
 
+    @FXML
+    private ComboBox<String> cbFilter;
+
+    @FXML
+    private ComboBox<String> cbItemList;
+
+    @FXML
+    private DatePicker dpStartDate;
+
+    @FXML
+    private DatePicker dpEndDate;
+
+    @FXML
+    private TableView<Transaction> reportTable;
+
+    @FXML
+    private TableColumn<Transaction, String> colReportDetailCode;
+
+    @FXML
+    private TableColumn<Transaction, String> colReportDetailName;
+
+    @FXML
+    private TableColumn<Transaction, Integer> colReportQuantity;
+
+    @FXML
+    private TableColumn<Transaction, String> colReportDate;
+
     private final ObservableList<User> userList = FXCollections.observableArrayList();
 
     private final ObservableList<Supplier> supplierList = FXCollections.observableArrayList();
@@ -111,7 +143,11 @@ public class AdminController implements Initializable {
 
     private final ObservableList<InventoryItem> inventoryList = FXCollections.observableArrayList();
 
-    private String LastUserID;
+    private final ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
+
+    private int maxNumericId = 0;
+
+    private  String LastUserID;
 
     @FXML
     private void handleMenuUserManagement() {
@@ -145,6 +181,7 @@ public class AdminController implements Initializable {
         loadHospitalTable();
         loadItemsFromFile();
         loadInventoryTable();
+        loadReportTable();
 
         mainTabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
             Stage stage = (Stage) mainTabPane.getScene().getWindow();
@@ -154,6 +191,44 @@ public class AdminController implements Initializable {
                 stage.setTitle("Hospital PPE Inventory System");
             }
         });
+    }
+
+    private void loadReportTable() {
+        cbFilter.getItems().addAll("Received", "Distributed");
+
+        cbItemList.setConverter(new StringConverter<String>() {
+            @Override
+            public String toString(String code) {
+                return itemList.stream()
+                        .filter(i -> i.getCode().equals(code))
+                        .findFirst()
+                        .map(i -> code + " - " + i.getName())
+                        .orElse(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return string.split(" - ")[0];
+            }
+        });
+        cbItemList.getItems().addAll(itemList.stream().map(Item::getCode).collect(Collectors.toList()));
+
+        loadTransactions();
+
+        colReportDetailCode.setCellValueFactory(new PropertyValueFactory<>("partnerCode"));
+        colReportDetailName.setCellValueFactory(cellData -> {
+            Transaction t = cellData.getValue();
+            if(t.getType().equals("0")) {
+                return new SimpleStringProperty(getSupplierName(t.getPartnerCode()));
+            } else {
+                return new SimpleStringProperty(getHospitalName(t.getPartnerCode()));
+            }
+        });
+        colReportQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colReportDate.setCellValueFactory(cellData ->
+                new SimpleStringProperty(formatDateTime(cellData.getValue().getTimestamp()))
+        );
+        reportTable.setItems(transactionList.filtered(t -> true)); // Show all initially
     }
 
     private void loadInventoryTable() {
@@ -221,6 +296,7 @@ public class AdminController implements Initializable {
     private void loadUserTable() {
         colUserID.setCellValueFactory(new PropertyValueFactory<>("userId"));
         colUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colUserPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
         colUserType.setCellValueFactory(new PropertyValueFactory<>("userType"));
 
         loadUsersFromFile();
@@ -258,8 +334,6 @@ public class AdminController implements Initializable {
                     }
 
                     supplierList.add(new Supplier(id, name, contact, address.toString()));
-
-                    LastUserID = id;
                 }
             }
         } catch (IOException e) {
@@ -297,8 +371,6 @@ public class AdminController implements Initializable {
                     }
 
                     hospitalList.add(new Hospital(id, name, contact, address.toString()));
-
-                    LastUserID = id;
                 }
             }
         } catch (IOException e) {
@@ -320,11 +392,17 @@ public class AdminController implements Initializable {
                     String password = tokens[2].trim();
                     String type = tokens[3].trim();
 
-                    // Create a new User object and add it to the list
                     userList.add(new User(id, name, password, type));
 
-                    LastUserID = id;
+                    int numericId = Integer.parseInt(id.substring(1));
+                    if (numericId > maxNumericId) {
+                        maxNumericId = numericId;
+                    }
                 }
+            }
+
+            if (maxNumericId > 0) {
+                LastUserID = "U" + String.format("%03d", maxNumericId);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -405,11 +483,14 @@ public class AdminController implements Initializable {
             boolean exists = userList.stream().anyMatch(u -> u.getUserId().equals(id));
             if (exists) {
                 showAlert("Input Error", "User ID already exists.");
+                System.out.println("Duplicate User ID " + id);
                 return;
             }
 
             User newUser = new User(id, name, password, userType);
             userList.add(newUser);
+            LastUserID = id;
+
             saveUsersToFile();
 
             mainTabPane.getTabs().remove(addUserTab);
@@ -431,7 +512,8 @@ public class AdminController implements Initializable {
 
         String numericPart = id.substring(1);
         int nextNumber = Integer.parseInt(numericPart) + 1;
-        return "U" + String.format("%03d", nextNumber); // Pad to 3 digits (e.g., U001)
+
+        return "U" + String.format("%03d", nextNumber);
     }
 
     public void handleUpdateUser(ActionEvent actionEvent) {
@@ -577,7 +659,7 @@ public class AdminController implements Initializable {
         tempTableView.setVisible(false);
 
         btnBack.setOnAction(e -> {
-            userTable.setItems(userList); // Reset to full list
+            userTable.setItems(userList);
             mainTabPane.getTabs().remove(searchUserTab);
             mainTabPane.getSelectionModel().select(tabUserManagement);
         });
@@ -748,9 +830,6 @@ public class AdminController implements Initializable {
         mainTabPane.getSelectionModel().select(updateHospitalTab);
     }
 
-    public void handleSearchReport(ActionEvent actionEvent) {
-    }
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -864,6 +943,12 @@ public class AdminController implements Initializable {
 
         TextField quantityField = new TextField();
         Button btnSubmit = new Button("Submit");
+        Button btnBack = new Button("Back");
+
+        btnBack.setOnAction(e -> {
+            mainTabPane.getTabs().remove(receiveTab);
+            mainTabPane.getSelectionModel().select(tabInventoryManagement);
+        });
 
         btnSubmit.setOnAction(e -> {
             try {
@@ -891,11 +976,12 @@ public class AdminController implements Initializable {
             }
         });
 
+        HBox buttonBox = new HBox(10, btnSubmit, btnBack);
         vbox.getChildren().addAll(
                 new Label("Item:"), itemCombo,
                 new Label("Supplier:"), supplierCombo,
                 new Label("Quantity:"), quantityField,
-                btnSubmit
+                buttonBox
         );
 
         receiveTab.setContent(vbox);
@@ -946,6 +1032,12 @@ public class AdminController implements Initializable {
 
         TextField quantityField = new TextField();
         Button btnSubmit = new Button("Submit");
+        Button btnBack = new Button("Back");
+
+        btnBack.setOnAction(e -> {
+            mainTabPane.getTabs().remove(distributeTab);
+            mainTabPane.getSelectionModel().select(tabInventoryManagement);
+        });
 
         btnSubmit.setOnAction(e -> {
             try {
@@ -965,7 +1057,7 @@ public class AdminController implements Initializable {
                     return;
                 }
 
-                updatePpeQuantity(itemCode, item.getSupplierCode(), -quantity,hospitalCode);
+                updatePpeQuantity(itemCode, item.getSupplierCode(), -quantity, hospitalCode);
 
                 inventoryTable.refresh();
                 mainTabPane.getTabs().remove(distributeTab);
@@ -975,15 +1067,94 @@ public class AdminController implements Initializable {
             }
         });
 
+        HBox buttonBox = new HBox(10, btnSubmit, btnBack);
         vbox.getChildren().addAll(
                 new Label("Item:"), itemCombo,
                 new Label("Hospital:"), hospitalCombo,
                 new Label("Quantity:"), quantityField,
-                btnSubmit
+                buttonBox
         );
 
         distributeTab.setContent(vbox);
         mainTabPane.getTabs().add(distributeTab);
         mainTabPane.getSelectionModel().select(distributeTab);
+    }
+
+    private void loadTransactions() {
+        String filePath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\transactions.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if(parts.length >= 5) {
+                    LocalDateTime date = LocalDateTime.parse(parts[4], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                    transactionList.add(new Transaction(
+                            parts[0],
+                            parts[1],
+                            parts[2],
+                            Integer.parseInt(parts[3]),
+                            date
+                    ));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String formatDateTime(LocalDateTime dateTime) {
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
+    private String getSupplierName(String code) {
+        return supplierList.stream()
+                .filter(s -> s.getSupplierID().equals(code))
+                .findFirst()
+                .map(Supplier::getSupplierName)
+                .orElse("Unknown Supplier");
+    }
+
+    private String getHospitalName(String code) {
+        return hospitalList.stream()
+                .filter(h -> h.getHospitalID().equals(code))
+                .findFirst()
+                .map(Hospital::getHospitalName)
+                .orElse("Unknown Hospital");
+    }
+
+
+    public void handleSearchReport(ActionEvent actionEvent) {
+        String filter = cbFilter.getValue();
+        String itemCode = cbItemList.getValue();
+        LocalDate startDate = dpStartDate.getValue();
+        LocalDate endDate = dpEndDate.getValue();
+
+        Predicate<Transaction> filterPredicate = t -> {
+            boolean dateValid = true;
+            if(startDate != null && endDate != null) {
+                LocalDate transDate = t.getTimestamp().toLocalDate();
+                dateValid = !transDate.isBefore(startDate) && !transDate.isAfter(endDate);
+            }
+
+            boolean typeValid = filter == null ||
+                    (filter.equals("Received") && t.getType().equals("0")) ||
+                    (filter.equals("Distributed") && t.getType().equals("1"));
+
+            boolean itemValid = itemCode == null || itemCode.isEmpty() ||
+                    t.getItemCode().equals(itemCode);
+
+            return dateValid && typeValid && itemValid;
+        };
+
+        if(filter != null) {
+            if(filter.equals("Received")) {
+                colReportDetailCode.setText("Supplier Code");
+                colReportDetailName.setText("Supplier Name");
+            } else {
+                colReportDetailCode.setText("Hospital Code");
+                colReportDetailName.setText("Hospital Name");
+            }
+        }
+        reportTable.setItems(transactionList.filtered(filterPredicate));
     }
 }

@@ -29,10 +29,11 @@
                <AnchorPane>
                   <children>
                      <!-- TableView to display user list -->
-                     <TableView fx:id="userTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                     <TableView fx:id="userTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="700.0">
                         <columns>
                            <TableColumn fx:id="colUserID" prefWidth="100" text="User ID" />
                            <TableColumn fx:id="colUserName" prefWidth="200" text="Name" />
+                           <TableColumn fx:id="colUserPassword" prefWidth="200" text="Password"/>
                            <TableColumn fx:id="colUserType" prefWidth="100" text="User Type" />
                         </columns>
                      </TableView>
@@ -128,7 +129,6 @@
                         </rowConstraints>
                         <children>
                            <Label text="Item Code:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                           <TextField fx:id="tfSearchItemCode" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                            <Label text="Start Date:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                            <DatePicker fx:id="dpStartDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -137,13 +137,16 @@
                            <DatePicker fx:id="dpEndDate" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
                            <Button fx:id="btnSearchReport" onAction="#handleSearchReport" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <ComboBox fx:id="cbFilter" prefWidth="150.0" GridPane.columnIndex="2" />
+                           <ComboBox fx:id="cbItemList" prefHeight="26.0" prefWidth="201.0" GridPane.columnIndex="1" />
                         </children>
                      </GridPane>
                      <!-- TableView for displaying report results -->
-                     <TableView fx:id="reportTable" layoutX="20.0" layoutY="150.0" prefHeight="200.0" prefWidth="560.0">
+                     <TableView fx:id="reportTable" layoutX="20.0" layoutY="150.0" prefHeight="200.0" prefWidth="700.0">
                         <columns>
-                           <TableColumn fx:id="colReportItemCode" prefWidth="100" text="Item Code" />
-                           <TableColumn fx:id="colReportDetails" prefWidth="300" text="Details" />
+                           <TableColumn fx:id="colReportDetailCode" prefWidth="100" text="Supplier Code" />
+                           <TableColumn fx:id="colReportDetailName" prefWidth="300" text="Supplier Name" />
+                           <TableColumn fx:id="colReportQuantity" prefWidth="100" text="Quantity"/>
                            <TableColumn fx:id="colReportDate" prefWidth="150" text="Date" />
                         </columns>
                      </TableView>

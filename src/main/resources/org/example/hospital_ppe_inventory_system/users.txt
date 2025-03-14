@@ -3,6 +3,9 @@ U002,Will Smith,84320123,admin
 U003,Ali Ahmad,ABC123,staff
 U004,Adolf Hitler,EDF456,staff
 U005,Kujo Jotaro,483209,staff
-U005,Dio Brando,484039,staff
+U006,Dio Brando,484039,staff
 U007,Joseph Joestar,340981,admin
 U009,John Wick,723489,staff
+U010,Trump,275800,staff
+U011,WCNMD,154309,staff
+U012,JB,723841,staff

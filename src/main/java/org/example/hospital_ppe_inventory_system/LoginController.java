@@ -39,19 +39,16 @@ public class LoginController implements Initializable {
         boolean userFound = false;
         String userType = "";
 
-        // Read users.txt file and search for matching credentials
         String userFilePath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\users.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(userFilePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Assume the format: userID,name,password,userType
                 String[] tokens = line.split(",");
                 if (tokens.length >= 4) {
                     String userId = tokens[0].trim();
                     String password = tokens[2].trim();
                     String type = tokens[3].trim();
 
-                    // Check if entered credentials match
                     if (userId.equals(enteredUserId) && password.equals(enteredPassword)) {
                         userFound = true;
                         userType = type;
@@ -66,7 +63,6 @@ public class LoginController implements Initializable {
         }
 
         if (userFound) {
-            // Depending on the user type, load the appropriate dashboard
             try {
                 FXMLLoader loader = new FXMLLoader();
                 Parent root;
@@ -92,12 +88,10 @@ public class LoginController implements Initializable {
                 showAlert("Loading Error", "Unable to load dashboard.");
             }
         } else {
-            // If credentials do not match, display an error message
             showAlert("Login Failed", "Invalid User ID or Password.");
         }
     }
 
-    // Helper method to display alerts
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

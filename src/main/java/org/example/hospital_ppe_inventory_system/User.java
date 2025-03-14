@@ -19,10 +19,6 @@ public class User {
         return userId.get();
     }
 
-    public void setUserId(String id) {
-        userId.set(id);
-    }
-
     public String getName() {
         return name.get();
     }

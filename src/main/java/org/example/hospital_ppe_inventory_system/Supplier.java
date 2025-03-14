@@ -31,10 +31,6 @@ public class Supplier {
         return supplierAddress.get();
     }
 
-    public void setSupplierID(String supplierID) {
-        this.supplierID.set(supplierID);
-    }
-
     public void setSupplierName(String supplierName) {
         this.supplierName.set(supplierName);
     }
