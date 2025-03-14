@@ -1,0 +1,6 @@
+HC,Head Cover
+FS,Face Shield
+MS,Mask
+GL,Gloves
+GW,Gown
+SC,Shoe Covers

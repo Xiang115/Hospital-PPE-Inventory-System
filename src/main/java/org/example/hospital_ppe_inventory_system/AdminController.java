@@ -12,10 +12,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.*;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class AdminController implements Initializable {
 
@@ -79,24 +83,43 @@ public class AdminController implements Initializable {
     @FXML
     private TableColumn<User, String> colUserType;
 
-    // ObservableList to hold the user data
+    @FXML
+    private TableView<InventoryItem> inventoryTable;
+
+    @FXML
+    private TableColumn<InventoryItem, String> colItemCode;
+
+    @FXML
+    private TableColumn<InventoryItem, String> colItemName;
+
+    @FXML
+    private TableColumn<InventoryItem, String> colInventorySupplierCode;
+
+    @FXML
+    private TableColumn<InventoryItem, String> colInventorySupplierName;
+
+    @FXML
+    private TableColumn<InventoryItem, Integer> colQuantity;
+
     private final ObservableList<User> userList = FXCollections.observableArrayList();
 
     private final ObservableList<Supplier> supplierList = FXCollections.observableArrayList();
 
     private final ObservableList<Hospital> hospitalList = FXCollections.observableArrayList();
 
+    private final ObservableList<Item> itemList = FXCollections.observableArrayList();
+
+    private final ObservableList<InventoryItem> inventoryList = FXCollections.observableArrayList();
+
     private String LastUserID;
 
     @FXML
     private void handleMenuUserManagement() {
-        // Select the first tab (assuming "User Management" is the first one)
         mainTabPane.getSelectionModel().select(tabUserManagement);
     }
 
     @FXML
     private void handleMenuInventoryManagement() {
-        // Select the second tab (assuming "Inventory Management" is the second one)
         mainTabPane.getSelectionModel().select(tabInventoryManagement);
     }
 
@@ -120,6 +143,8 @@ public class AdminController implements Initializable {
         loadUserTable();
         loadSupplierTable();
         loadHospitalTable();
+        loadItemsFromFile();
+        loadInventoryTable();
 
         mainTabPane.getSelectionModel().selectedItemProperty().addListener((obs, oldTab, newTab) -> {
             Stage stage = (Stage) mainTabPane.getScene().getWindow();
@@ -129,6 +154,68 @@ public class AdminController implements Initializable {
                 stage.setTitle("Hospital PPE Inventory System");
             }
         });
+    }
+
+    private void loadInventoryTable() {
+        colItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
+        colItemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        colInventorySupplierCode.setCellValueFactory(new PropertyValueFactory<>("supplierCode"));
+        colInventorySupplierName.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+        colQuantity.setCellValueFactory(cellData -> cellData.getValue().quantityProperty().asObject());
+
+        loadInventoryFromFile();
+
+        inventoryTable.setItems(inventoryList);
+    }
+
+    private void loadInventoryFromFile() {
+        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\ppe.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.split(",");
+                if (tokens.length >= 3) {
+                    String itemCode = tokens[0].trim();
+                    String supplierCode = tokens[1].trim();
+                    int quantity = Integer.parseInt(tokens[2].trim());
+
+                    String itemName = itemList.stream()
+                            .filter(item -> item.getCode().equals(itemCode))
+                            .findFirst()
+                            .map(Item::getName)
+                            .orElse("Unknown Item");
+
+                    String supplierName = supplierList.stream()
+                            .filter(supplier -> supplier.getSupplierID().equals(supplierCode))
+                            .findFirst()
+                            .map(Supplier::getSupplierName)
+                            .orElse("Unknown Supplier");
+
+                    inventoryList.add(new InventoryItem(
+                            itemCode, itemName, supplierCode, supplierName, quantity
+                    ));
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadItemsFromFile() {
+        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\Items.txt"; // Adjust path
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.split(",");
+                if (tokens.length >= 2) {
+                    String code = tokens[0].trim();
+                    String name = tokens[1].trim();
+                    itemList.add(new Item(code, name));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadUserTable() {
@@ -170,7 +257,6 @@ public class AdminController implements Initializable {
                         address.append(tokens[i]);
                     }
 
-                    // Create a new User object and add it to the list
                     supplierList.add(new Supplier(id, name, contact, address.toString()));
 
                     LastUserID = id;
@@ -210,7 +296,6 @@ public class AdminController implements Initializable {
                         address.append(tokens[i]);
                     }
 
-                    // Create a new User object and add it to the list
                     hospitalList.add(new Hospital(id, name, contact, address.toString()));
 
                     LastUserID = id;
@@ -226,10 +311,8 @@ public class AdminController implements Initializable {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // Skip empty lines
                 if (line.trim().isEmpty()) continue;
 
-                // Split the line by commas (assumes format: userId,name,password,userType)
                 String[] tokens = line.split(",");
                 if (tokens.length >= 4) {
                     String id = tokens[0].trim();
@@ -487,7 +570,6 @@ public class AdminController implements Initializable {
         tempTableView.setPrefHeight(50);
         tempTableView.setPrefWidth(400);
 
-        // Set column widths
         tempColUserID.setPrefWidth(100);
         tempColUserName.setPrefWidth(150);
         tempColUserType.setPrefWidth(100);
@@ -530,12 +612,6 @@ public class AdminController implements Initializable {
 
         mainTabPane.getTabs().add(searchUserTab);
         mainTabPane.getSelectionModel().select(searchUserTab);
-    }
-
-    public void handleCreateInventory(ActionEvent actionEvent) {
-    }
-
-    public void handleUpdateInventory(ActionEvent actionEvent) {
     }
 
     public void handleUpdateSupplier(ActionEvent actionEvent) {
@@ -675,11 +751,239 @@ public class AdminController implements Initializable {
     public void handleSearchReport(ActionEvent actionEvent) {
     }
 
-    // Helper method for showing alerts
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void updatePpeQuantity(String itemCode, String supplierCode, int quantityChange) {
+        for (InventoryItem item : inventoryList) {
+            if (item.getItemCode().equals(itemCode) && item.getSupplierCode().equals(supplierCode)) {
+                int newQuantity = item.getQuantity() + quantityChange;
+
+                if (newQuantity > item.getQuantity()) {
+                    logTransaction("0", itemCode, supplierCode, quantityChange);
+                } else {
+                    logTransaction("1", itemCode, supplierCode, -1 * quantityChange);
+                }
+
+                item.setQuantity(newQuantity);
+                System.out.println("Updated quantity: " + item.getQuantity());
+                break;
+            }
+        }
+        savePpeFile();
+    }
+
+    private void savePpeFile() {
+        String filePPEpath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\ppe.txt";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePPEpath))) {
+            for (InventoryItem item : inventoryList) {
+                bw.write(String.format("%s,%s,%d",
+                        item.getItemCode(),
+                        item.getSupplierCode(),
+                        item.getQuantity()));
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            showAlert("Error", "Failed to save PPE data");
+        }
+    }
+
+    private void logTransaction(String type, String itemCode, String partnerCode, int quantity) {
+        String fileTransactionPath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\transactions.txt";
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileTransactionPath, true))) {
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            bw.write(String.format("%s,%s,%s,%d,%s",
+                    type, itemCode, partnerCode, quantity, timestamp));
+            bw.newLine();
+        } catch (IOException e) {
+            showAlert("Error", "Failed to log transaction");
+        }
+    }
+
+
+    public void handleCreateInventory(ActionEvent actionEvent) {
+        for (InventoryItem item : inventoryList) {
+            item.setQuantity(100);
+        }
+
+        savePpeFile();
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("transactions.txt"))) {
+            bw.write("");
+        } catch (IOException e) {
+            showAlert("Error", "Failed to clear transactions");
+        }
+
+        inventoryTable.refresh();
+    }
+
+    public void handleReceiveInventory(ActionEvent actionEvent) {
+        Tab receiveTab = new Tab("Receive Inventory");
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+
+        ComboBox<String> itemCombo = new ComboBox<>();
+        itemCombo.setConverter(new StringConverter<String>() {
+            @Override
+            public String toString(String code) {
+                return itemList.stream()
+                        .filter(i -> i.getCode().equals(code))
+                        .findFirst()
+                        .map(i -> code + " - " + i.getName())
+                        .orElse(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return string.split(" - ")[0];
+            }
+        });
+        itemCombo.getItems().addAll(itemList.stream().map(Item::getCode).collect(Collectors.toList()));
+
+        ComboBox<String> supplierCombo = new ComboBox<>();
+        supplierCombo.setConverter(new StringConverter<String>() {
+            @Override
+            public String toString(String code) {
+                return supplierList.stream()
+                        .filter(s -> s.getSupplierID().equals(code))
+                        .findFirst()
+                        .map(s -> code + " - " + s.getSupplierName())
+                        .orElse(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return string.split(" - ")[0];
+            }
+        });
+        supplierCombo.getItems().addAll(supplierList.stream().map(Supplier::getSupplierID).collect(Collectors.toList()));
+
+        TextField quantityField = new TextField();
+        Button btnSubmit = new Button("Submit");
+
+        btnSubmit.setOnAction(e -> {
+            try {
+                int quantity = Integer.parseInt(quantityField.getText());
+                if (quantity <= 0) throw new NumberFormatException();
+
+                String itemCode = itemCombo.getValue();
+                String supplierCode = supplierCombo.getValue();
+
+                boolean combinationExists = inventoryList.stream()
+                        .anyMatch(item -> item.getItemCode().equals(itemCode) && item.getSupplierCode().equals(supplierCode));
+
+                if (!combinationExists) {
+                    showAlert("Invalid Combination", "The selected item and supplier combination does not exist.");
+                    return;
+                }
+
+                updatePpeQuantity(itemCode, supplierCode, quantity);
+
+                inventoryTable.refresh();
+                mainTabPane.getTabs().remove(receiveTab);
+                mainTabPane.getSelectionModel().select(tabInventoryManagement);
+            } catch (NumberFormatException ex) {
+                showAlert("Invalid Input", "Please enter a valid positive integer quantity");
+            }
+        });
+
+        vbox.getChildren().addAll(
+                new Label("Item:"), itemCombo,
+                new Label("Supplier:"), supplierCombo,
+                new Label("Quantity:"), quantityField,
+                btnSubmit
+        );
+
+        receiveTab.setContent(vbox);
+        mainTabPane.getTabs().add(receiveTab);
+        mainTabPane.getSelectionModel().select(receiveTab);
+    }
+
+    public void handleDistributeInventory(ActionEvent actionEvent) {
+        Tab distributeTab = new Tab("Distribute Inventory");
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(10));
+
+        ComboBox<String> itemCombo = new ComboBox<>();
+        itemCombo.setConverter(new StringConverter<String>() {
+            @Override
+            public String toString(String code) {
+                return itemList.stream()
+                        .filter(i -> i.getCode().equals(code))
+                        .findFirst()
+                        .map(i -> code + " - " + i.getName())
+                        .orElse(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return string.split(" - ")[0];
+            }
+        });
+        itemCombo.getItems().addAll(itemList.stream().map(Item::getCode).collect(Collectors.toList()));
+
+        ComboBox<String> hospitalCombo = new ComboBox<>();
+        hospitalCombo.setConverter(new StringConverter<String>() {
+            @Override
+            public String toString(String code) {
+                return hospitalList.stream()
+                        .filter(h -> h.getHospitalID().equals(code))
+                        .findFirst()
+                        .map(h -> code + " - " + h.getHospitalName())
+                        .orElse(code);
+            }
+
+            @Override
+            public String fromString(String string) {
+                return string.split(" - ")[0];
+            }
+        });
+        hospitalCombo.getItems().addAll(hospitalList.stream().map(Hospital::getHospitalID).collect(Collectors.toList()));
+
+        TextField quantityField = new TextField();
+        Button btnSubmit = new Button("Submit");
+
+        btnSubmit.setOnAction(e -> {
+            try {
+                int quantity = Integer.parseInt(quantityField.getText());
+                if (quantity <= 0) throw new NumberFormatException();
+
+                String itemCode = itemCombo.getValue();
+                String hospitalCode = hospitalCombo.getValue();
+
+                InventoryItem item = inventoryList.stream()
+                        .filter(i -> i.getItemCode().equals(itemCode))
+                        .findFirst()
+                        .orElse(null);
+
+                if (item == null || item.getQuantity() < quantity) {
+                    showAlert("Insufficient Stock", "Not enough inventory to distribute");
+                    return;
+                }
+
+                updatePpeQuantity(itemCode, item.getSupplierCode(), -quantity);
+
+                inventoryTable.refresh();
+                mainTabPane.getTabs().remove(distributeTab);
+                mainTabPane.getSelectionModel().select(tabInventoryManagement);
+            } catch (NumberFormatException ex) {
+                showAlert("Invalid Input", "Please enter a valid positive integer quantity");
+            }
+        });
+
+        vbox.getChildren().addAll(
+                new Label("Item:"), itemCombo,
+                new Label("Hospital:"), hospitalCombo,
+                new Label("Quantity:"), quantityField,
+                btnSubmit
+        );
+
+        distributeTab.setContent(vbox);
+        mainTabPane.getTabs().add(distributeTab);
+        mainTabPane.getSelectionModel().select(distributeTab);
     }
 }

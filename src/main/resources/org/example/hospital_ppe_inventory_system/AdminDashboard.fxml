@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.DatePicker?>
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.AdminController">
    <!-- MenuBar at the top for navigation -->
    <top>
@@ -25,11 +10,11 @@
          <menus>
             <Menu text="Navigation">
                <items>
-                  <MenuItem fx:id="menuUserManagement" text="User Management" onAction="#handleMenuUserManagement"/>
-                  <MenuItem fx:id="menuInventoryManagement" text="Inventory Management" onAction="#handleMenuInventoryManagement"/>
-                  <MenuItem fx:id="menuSupplierManagement" text="Supplier Management" onAction="#handleMenuSupplierManagement"/>
-                  <MenuItem fx:id="menuHospitalManagement" text="Hospital Management" onAction="#handleMenuHospitalManagement"/>
-                  <MenuItem fx:id="menuReportingTracking" text="Reporting &amp; Tracking" onAction="#handleMenuReportingTracking"/>
+                  <MenuItem fx:id="menuUserManagement" onAction="#handleMenuUserManagement" text="User Management" />
+                  <MenuItem fx:id="menuInventoryManagement" onAction="#handleMenuInventoryManagement" text="Inventory Management" />
+                  <MenuItem fx:id="menuSupplierManagement" onAction="#handleMenuSupplierManagement" text="Supplier Management" />
+                  <MenuItem fx:id="menuHospitalManagement" onAction="#handleMenuHospitalManagement" text="Hospital Management" />
+                  <MenuItem fx:id="menuReportingTracking" onAction="#handleMenuReportingTracking" text="Reporting &amp; Tracking" />
                </items>
             </Menu>
          </menus>
@@ -67,42 +52,20 @@
                <AnchorPane>
                   <children>
                      <!-- TableView for inventory items -->
-                     <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="560.0">
+                     <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
                         <columns>
                            <TableColumn fx:id="colItemCode" prefWidth="100" text="Item Code" />
-                           <TableColumn fx:id="colInventorySupplierCode" prefWidth="150" text="Supplier Code" />
+                           <TableColumn fx:id="colItemName" prefWidth="150" text="Item Name" />
+                           <TableColumn fx:id="colInventorySupplierCode" prefWidth="100" text="Supplier Code" />
+                           <TableColumn fx:id="colInventorySupplierName" prefWidth="250" text="Supplier Name" />
                            <TableColumn fx:id="colQuantity" prefWidth="100" text="Quantity" />
                         </columns>
                      </TableView>
-                     <!-- Form for inventory creation/update -->
-                     <GridPane hgap="10" layoutX="20.0" layoutY="240.0" vgap="10">
-                        <columnConstraints>
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                        </columnConstraints>
-                        <rowConstraints>
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        </rowConstraints>
-                        <children>
-                           <Label text="Item Code:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                           <TextField fx:id="tfItemCode" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                           <Label text="Supplier Code:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                           <TextField fx:id="tfInventorySupplierCode" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                           <Label text="Quantity:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                           <TextField fx:id="tfQuantity" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        </children>
-                     </GridPane>
                      <!-- Buttons for inventory actions -->
-                     <HBox layoutX="20.0" layoutY="360.0" spacing="10">
-                        <children>
-                           <Button fx:id="btnCreateInventory" onAction="#handleCreateInventory" text="Create Inventory" />
-                           <Button fx:id="btnUpdateInventory" onAction="#handleUpdateInventory" text="Update Inventory" />
-                        </children>
-                     </HBox>
+                     <HBox layoutX="20.0" layoutY="360.0" spacing="10" />
+                     <Button fx:id="btnCreateInventory" layoutX="22.0" layoutY="240.0" onAction="#handleCreateInventory" text="Create Inventory" />
+                     <Button fx:id="btnReceiveInventory" layoutX="146.0" layoutY="240.0" onAction="#handleReceiveInventory" text="Receive Inventory" />
+                     <Button fx:id="btnDistributeInventory" layoutX="273.0" layoutY="240.0" onAction="#handleDistributeInventory" text="Distribute Inventory" />
                   </children>
                </AnchorPane>
             </Tab>
@@ -115,7 +78,7 @@
                            <TableColumn fx:id="colSupplierID" prefWidth="100" text="Supplier Code" />
                            <TableColumn fx:id="colSupplierName" prefWidth="200" text="Supplier Name" />
                            <TableColumn fx:id="colSupplierContact" prefWidth="150" text="Contact" />
-                           <TableColumn fx:id="colSupplierAddress" prefWidth="800" text="Address"/>
+                           <TableColumn fx:id="colSupplierAddress" prefWidth="800" text="Address" />
                         </columns>
                      </TableView>
                      <!-- Action Buttons -->
@@ -135,8 +98,8 @@
                         <columns>
                            <TableColumn fx:id="colHospitalID" prefWidth="100" text="Hospital Code" />
                            <TableColumn fx:id="colHospitalName" prefWidth="200" text="Hospital Name" />
-                           <TableColumn fx:id="colHospitalContact" prefWidth="150" text="Contact"/>
-                           <TableColumn fx:id="colHospitalAddress" prefWidth="800" text="Address"/>
+                           <TableColumn fx:id="colHospitalContact" prefWidth="150" text="Contact" />
+                           <TableColumn fx:id="colHospitalAddress" prefWidth="800" text="Address" />
                         </columns>
                      </TableView>
                      <!-- Buttons for hospital actions -->
