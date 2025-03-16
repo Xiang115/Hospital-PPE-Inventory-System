@@ -3,9 +3,82 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.StaffController">
+   <top>
+      <MenuBar fx:id="menuBar">
+         <menus>
+            <Menu text="Navigation">
+               <items>
+                  <MenuItem fx:id="menuInventoryManagement" onAction="#handleMenuInventoryManagement" text="Inventory Management" />
+                  <MenuItem fx:id="menuReportingTracking" onAction="#handleMenuReportingTracking" text="Reporting &amp; Tracking" />
+                  <MenuItem fx:id="menuLogOut" onAction="#handleMenuLogOut" text="Log Out"/>
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <TabPane fx:id="mainTabPane" stylesheets="@hide-tabs.css">
+         <tabs>
+            <Tab fx:id="tabInventoryManagement" text="Inventory Management">
+               <AnchorPane>
+                  <children>
+                     <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
+                        <columns>
+                           <TableColumn fx:id="colItemCode" prefWidth="100" text="Item Code" />
+                           <TableColumn fx:id="colItemName" prefWidth="150" text="Item Name" />
+                           <TableColumn fx:id="colInventorySupplierCode" prefWidth="100" text="Supplier Code" />
+                           <TableColumn fx:id="colInventorySupplierName" prefWidth="250" text="Supplier Name" />
+                           <TableColumn fx:id="colQuantity" prefWidth="100" text="Quantity" />
+                        </columns>
+                     </TableView>
+                     <HBox layoutX="20.0" layoutY="360.0" spacing="10" />
+                     <Button fx:id="btnCreateInventory" layoutX="22.0" layoutY="240.0" onAction="#handleCreateInventory" text="Create Inventory" />
+                     <Button fx:id="btnReceiveInventory" layoutX="146.0" layoutY="240.0" onAction="#handleReceiveInventory" text="Receive Inventory" />
+                     <Button fx:id="btnDistributeInventory" layoutX="273.0" layoutY="240.0" onAction="#handleDistributeInventory" text="Distribute Inventory" />
+                  </children>
+               </AnchorPane>
+            </Tab>
+            <Tab fx:id="tabReportingTracking" text="Reporting &amp; Tracking">
+               <AnchorPane>
+                  <children>
+                     <GridPane hgap="10" layoutX="20.0" layoutY="20.0" vgap="10">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <Label text="Item Code:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.StaffController">
-   <children>
-      <Label layoutX="286.0" layoutY="192.0" text="Label" />
-   </children>
-</AnchorPane>
+                           <Label text="Start Date:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                           <DatePicker fx:id="dpStartDate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                           <Label text="End Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                           <DatePicker fx:id="dpEndDate" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                           <Button fx:id="btnSearchReport" onAction="#handleSearchReport" text="Search" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <ComboBox fx:id="cbFilter" prefWidth="150.0" GridPane.columnIndex="2" />
+                           <ComboBox fx:id="cbItemList" prefHeight="26.0" prefWidth="201.0" GridPane.columnIndex="1" />
+                        </children>
+                     </GridPane>
+                     <TableView fx:id="reportTable" layoutX="20.0" layoutY="150.0" prefHeight="200.0" prefWidth="700.0">
+                        <columns>
+                           <TableColumn fx:id="colReportDetailCode" prefWidth="100" text="Supplier Code" />
+                           <TableColumn fx:id="colReportDetailName" prefWidth="300" text="Supplier Name" />
+                           <TableColumn fx:id="colReportQuantity" prefWidth="100" text="Quantity"/>
+                           <TableColumn fx:id="colReportDate" prefWidth="150" text="Date" />
+                        </columns>
+                     </TableView>
+                  </children>
+               </AnchorPane>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </center>
+</BorderPane>
