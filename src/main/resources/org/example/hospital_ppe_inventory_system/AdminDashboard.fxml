@@ -3,18 +3,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import java.awt.Image?>
+<?import javafx.scene.image.ImageView?>
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.hospital_ppe_inventory_system.AdminController">
    <top>
       <MenuBar fx:id="menuBar">
          <menus>
-            <Menu text="Navigation">
+            <Menu text="Log Out">
                <items>
-                  <MenuItem fx:id="menuUserManagement" onAction="#handleMenuUserManagement" text="User Management" />
-                  <MenuItem fx:id="menuInventoryManagement" onAction="#handleMenuInventoryManagement" text="Inventory Management" />
-                  <MenuItem fx:id="menuSupplierManagement" onAction="#handleMenuSupplierManagement" text="Supplier Management" />
-                  <MenuItem fx:id="menuHospitalManagement" onAction="#handleMenuHospitalManagement" text="Hospital Management" />
-                  <MenuItem fx:id="menuReportingTracking" onAction="#handleMenuReportingTracking" text="Reporting &amp; Tracking" />
-                  <MenuItem fx:id="menuLogOut" onAction="#handleMenuLogOut" text="Log Out"/>
+                  <MenuItem fx:id="menuLogOut" onAction="#handleMenuLogOut" text="Log Out" />
                </items>
             </Menu>
          </menus>
@@ -23,14 +20,14 @@
    <center>
       <TabPane fx:id="mainTabPane" stylesheets="@hide-tabs.css">
          <tabs>
-            <Tab fx:id="tabUserManagement" text="User Management">
+            <Tab fx:id="tabUserManagement" closable="false" text="User Management">
                <AnchorPane>
                   <children>
                      <TableView fx:id="userTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="700.0">
                         <columns>
                            <TableColumn fx:id="colUserID" prefWidth="100" text="User ID" />
                            <TableColumn fx:id="colUserName" prefWidth="200" text="Name" />
-                           <TableColumn fx:id="colUserPassword" prefWidth="200" text="Password"/>
+                           <TableColumn fx:id="colUserPassword" prefWidth="200" text="Password" />
                            <TableColumn fx:id="colUserType" prefWidth="100" text="User Type" />
                         </columns>
                      </TableView>
@@ -45,7 +42,7 @@
                   </children>
                </AnchorPane>
             </Tab>
-            <Tab fx:id="tabInventoryManagement" text="Inventory Management">
+            <Tab fx:id="tabInventoryManagement" closable="false" text="Inventory Management">
                <AnchorPane>
                   <children>
                      <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
@@ -58,13 +55,12 @@
                         </columns>
                      </TableView>
                      <HBox layoutX="20.0" layoutY="360.0" spacing="10" />
-                     <Button fx:id="btnCreateInventory" layoutX="22.0" layoutY="240.0" onAction="#handleCreateInventory" text="Create Inventory" />
-                     <Button fx:id="btnReceiveInventory" layoutX="146.0" layoutY="240.0" onAction="#handleReceiveInventory" text="Receive Inventory" />
-                     <Button fx:id="btnDistributeInventory" layoutX="273.0" layoutY="240.0" onAction="#handleDistributeInventory" text="Distribute Inventory" />
+                     <Button fx:id="btnReceiveInventory" layoutX="20.0" layoutY="240.0" onAction="#handleReceiveInventory" text="Receive Inventory" />
+                     <Button fx:id="btnDistributeInventory" layoutX="159.0" layoutY="240.0" onAction="#handleDistributeInventory" text="Distribute Inventory" />
                   </children>
                </AnchorPane>
             </Tab>
-            <Tab fx:id="tabSupplierManagement" text="Supplier Management">
+            <Tab fx:id="tabSupplierManagement" closable="false" text="Supplier Management">
                <AnchorPane>
                   <children>
                      <TableView fx:id="supplierTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
@@ -83,7 +79,7 @@
                   </children>
                </AnchorPane>
             </Tab>
-            <Tab fx:id="tabHospitalManagement" text="Hospital Management">
+            <Tab fx:id="tabHospitalManagement" closable="false" text="Hospital Management">
                <AnchorPane>
                   <children>
                      <TableView fx:id="hospitalTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
@@ -102,7 +98,7 @@
                   </children>
                </AnchorPane>
             </Tab>
-            <Tab fx:id="tabReportingTracking" text="Reporting &amp; Tracking">
+            <Tab fx:id="tabReportingTracking" closable="false" text="Reporting &amp; Tracking">
                <AnchorPane>
                   <children>
                      <GridPane hgap="10" layoutX="20.0" layoutY="20.0" vgap="10">
@@ -134,7 +130,7 @@
                         <columns>
                            <TableColumn fx:id="colReportDetailCode" prefWidth="100" text="Supplier Code" />
                            <TableColumn fx:id="colReportDetailName" prefWidth="300" text="Supplier Name" />
-                           <TableColumn fx:id="colReportQuantity" prefWidth="100" text="Quantity"/>
+                           <TableColumn fx:id="colReportQuantity" prefWidth="100" text="Quantity" />
                            <TableColumn fx:id="colReportDate" prefWidth="150" text="Date" />
                         </columns>
                      </TableView>

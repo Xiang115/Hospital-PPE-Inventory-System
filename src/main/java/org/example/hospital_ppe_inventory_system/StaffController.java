@@ -341,26 +341,17 @@ public class StaffController implements Initializable {
             bw.write(String.format("%s,%s,%s,%d,%s",
                     type, itemCode, partnerCode, quantity, timestamp));
             bw.newLine();
+
+            transactionList.add(new Transaction(
+                    type,
+                    itemCode,
+                    partnerCode,
+                    quantity,
+                    LocalDateTime.parse(timestamp)
+            ));
         } catch (IOException e) {
             showAlert("Error", "Failed to log transaction");
         }
-    }
-
-
-    public void handleCreateInventory(ActionEvent actionEvent) {
-        for (InventoryItem item : inventoryList) {
-            item.setQuantity(100);
-        }
-
-        savePpeFile();
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("transactions.txt"))) {
-            bw.write("");
-        } catch (IOException e) {
-            showAlert("Error", "Failed to clear transactions");
-        }
-
-        inventoryTable.refresh();
     }
 
     public void handleReceiveInventory(ActionEvent actionEvent) {
@@ -432,6 +423,8 @@ public class StaffController implements Initializable {
                 updatePpeQuantity(itemCode, supplierCode, quantity, null);
 
                 inventoryTable.refresh();
+                reportTable.refresh();
+                System.out.println("Received Inventory");
                 mainTabPane.getTabs().remove(receiveTab);
                 mainTabPane.getSelectionModel().select(tabInventoryManagement);
             } catch (NumberFormatException ex) {
@@ -523,6 +516,7 @@ public class StaffController implements Initializable {
                 updatePpeQuantity(itemCode, item.getSupplierCode(), -quantity, hospitalCode);
 
                 inventoryTable.refresh();
+                reportTable.refresh();
                 mainTabPane.getTabs().remove(distributeTab);
                 mainTabPane.getSelectionModel().select(tabInventoryManagement);
             } catch (NumberFormatException ex) {

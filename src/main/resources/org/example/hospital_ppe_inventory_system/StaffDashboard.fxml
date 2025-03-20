@@ -7,11 +7,9 @@
    <top>
       <MenuBar fx:id="menuBar">
          <menus>
-            <Menu text="Navigation">
+            <Menu text="Log Out">
                <items>
-                  <MenuItem fx:id="menuInventoryManagement" onAction="#handleMenuInventoryManagement" text="Inventory Management" />
-                  <MenuItem fx:id="menuReportingTracking" onAction="#handleMenuReportingTracking" text="Reporting &amp; Tracking" />
-                  <MenuItem fx:id="menuLogOut" onAction="#handleMenuLogOut" text="Log Out"/>
+                  <MenuItem fx:id="menuLogOut" onAction="#handleMenuLogOut" text="Log Out" />
                </items>
             </Menu>
          </menus>
@@ -20,7 +18,7 @@
    <center>
       <TabPane fx:id="mainTabPane" stylesheets="@hide-tabs.css">
          <tabs>
-            <Tab fx:id="tabInventoryManagement" text="Inventory Management">
+            <Tab fx:id="tabInventoryManagement" closable="false" text="Inventory Management">
                <AnchorPane>
                   <children>
                      <TableView fx:id="inventoryTable" layoutX="20.0" layoutY="20.0" prefHeight="200.0" prefWidth="750.0">
@@ -33,13 +31,12 @@
                         </columns>
                      </TableView>
                      <HBox layoutX="20.0" layoutY="360.0" spacing="10" />
-                     <Button fx:id="btnCreateInventory" layoutX="22.0" layoutY="240.0" onAction="#handleCreateInventory" text="Create Inventory" />
-                     <Button fx:id="btnReceiveInventory" layoutX="146.0" layoutY="240.0" onAction="#handleReceiveInventory" text="Receive Inventory" />
-                     <Button fx:id="btnDistributeInventory" layoutX="273.0" layoutY="240.0" onAction="#handleDistributeInventory" text="Distribute Inventory" />
+                     <Button fx:id="btnReceiveInventory" layoutX="20.0" layoutY="240.0" onAction="#handleReceiveInventory" text="Receive Inventory" />
+                     <Button fx:id="btnDistributeInventory" layoutX="156.0" layoutY="240.0" onAction="#handleDistributeInventory" text="Distribute Inventory" />
                   </children>
                </AnchorPane>
             </Tab>
-            <Tab fx:id="tabReportingTracking" text="Reporting &amp; Tracking">
+            <Tab fx:id="tabReportingTracking" closable="false" text="Reporting &amp; Tracking">
                <AnchorPane>
                   <children>
                      <GridPane hgap="10" layoutX="20.0" layoutY="20.0" vgap="10">
@@ -71,7 +68,7 @@
                         <columns>
                            <TableColumn fx:id="colReportDetailCode" prefWidth="100" text="Supplier Code" />
                            <TableColumn fx:id="colReportDetailName" prefWidth="300" text="Supplier Name" />
-                           <TableColumn fx:id="colReportQuantity" prefWidth="100" text="Quantity"/>
+                           <TableColumn fx:id="colReportQuantity" prefWidth="100" text="Quantity" />
                            <TableColumn fx:id="colReportDate" prefWidth="150" text="Date" />
                         </columns>
                      </TableView>
