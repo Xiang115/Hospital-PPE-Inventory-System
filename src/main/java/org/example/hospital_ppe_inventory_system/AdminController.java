@@ -154,7 +154,7 @@ public class AdminController extends StaffController implements Initializable {
     }
 
     public void loadHospitalsFromFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\hospitals.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/hospitals.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -180,7 +180,7 @@ public class AdminController extends StaffController implements Initializable {
     }
 
     public void loadUsersFromFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\users.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/users.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -211,7 +211,7 @@ public class AdminController extends StaffController implements Initializable {
     }
 
     private void loadSuppliersFromFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\suppliers.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/suppliers.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -237,7 +237,7 @@ public class AdminController extends StaffController implements Initializable {
     }
 
     private void saveUsersToFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\users.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/users.txt";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
             for (User u : userList) {
                 bw.write(u.getUserId() + "," + u.getName() + "," + u.getPassword() + "," + u.getUserType());
@@ -250,7 +250,7 @@ public class AdminController extends StaffController implements Initializable {
     }
 
     private void saveSuppliersToFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\suppliers.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/suppliers.txt";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
             for (Supplier u : supplierList) {
                 bw.write(u.getSupplierID() + "," + u.getSupplierName() + "," + u.getSupplierContact() + "," + u.getSupplierAddress());
@@ -263,7 +263,7 @@ public class AdminController extends StaffController implements Initializable {
     }
 
     private void saveHospitalToFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\hospitals.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/hospitals.txt";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
             for (Hospital u : hospitalList) {
                 bw.write(u.getHospitalID() + "," + u.getHospitalName() + "," + u.getHospitalContact() + "," + u.getHospitalAddress());

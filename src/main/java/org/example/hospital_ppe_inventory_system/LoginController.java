@@ -39,7 +39,7 @@ public class LoginController implements Initializable {
         boolean userFound = false;
         String userType = "";
 
-        String userFilePath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\users.txt";
+        String userFilePath = "src/main/resources/org/example/hospital_ppe_inventory_system/users.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(userFilePath))) {
             String line;
             while ((line = reader.readLine()) != null) {

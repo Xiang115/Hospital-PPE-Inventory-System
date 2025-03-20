@@ -184,7 +184,7 @@ public class StaffController implements Initializable {
     }
 
     private void loadInventoryFromFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\ppe.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/ppe.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -217,7 +217,7 @@ public class StaffController implements Initializable {
     }
 
     public void loadItemsFromFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\Items.txt"; // Adjust path
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/Items.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -234,7 +234,7 @@ public class StaffController implements Initializable {
     }
 
     private void loadSuppliersFromFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\suppliers.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/suppliers.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -261,7 +261,7 @@ public class StaffController implements Initializable {
     }
 
     private void loadHospitalsFromFile() {
-        String fileName = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\hospitals.txt";
+        String fileName = "src/main/resources/org/example/hospital_ppe_inventory_system/hospitals.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -314,7 +314,7 @@ public class StaffController implements Initializable {
     }
 
     private void savePpeFile() {
-        String filePPEpath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\ppe.txt";
+        String filePPEpath = "src/main/resources/org/example/hospital_ppe_inventory_system/ppe.txt";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePPEpath))) {
             for (InventoryItem item : inventoryList) {
                 bw.write(String.format("%s,%s,%d",
@@ -329,7 +329,7 @@ public class StaffController implements Initializable {
     }
 
     private void logTransaction(String type, String itemCode, String partnerCode, int quantity) {
-        String fileTransactionPath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\transactions.txt";
+        String fileTransactionPath = "src/main/resources/org/example/hospital_ppe_inventory_system/transactions.txt";
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileTransactionPath, true))) {
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             bw.write(String.format("%s,%s,%s,%d,%s",
@@ -538,7 +538,7 @@ public class StaffController implements Initializable {
     }
 
     private void loadTransactions() {
-        String filePath = "C:\\Users\\Goh\\Desktop\\Hospital_PPE_Inventory_System\\src\\main\\resources\\org\\example\\hospital_ppe_inventory_system\\transactions.txt";
+        String filePath = "src/main/resources/org/example/hospital_ppe_inventory_system/transactions.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
