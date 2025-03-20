@@ -163,7 +163,13 @@ public class StaffController implements Initializable {
         colReportDate.setCellValueFactory(cellData ->
                 new SimpleStringProperty(formatDateTime(cellData.getValue().getTimestamp()))
         );
-        reportTable.setItems(transactionList.filtered(t -> true)); // Show all initially
+
+        reportTable.getSortOrder().add(colReportDate);
+
+        reportTable.setItems(transactionList.filtered(t -> true));
+
+        colReportDate.setSortType(TableColumn.SortType.ASCENDING);
+        reportTable.sort();
     }
 
     public void loadInventoryTable() {
